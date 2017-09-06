@@ -3,4 +3,62 @@
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
 
+    <description>Shiro安全配置</description>
+
+    <!-- Shiro's main business-tier object for web-enabled applications -->
+    <bean id="securityManager" class="org.apache.shiro.web.mgt.DefaultWebSecurityManager">
+        <property name="realm" ref="shiroDbRealm"/>
+        <property name="cacheManager" ref="shiroEhcacheManager"/>
+    </bean>
+
+    <!-- 項目自定义的Realm, 所有accountService依赖的dao都需要用depends-on声明 -->
+    <bean id="shiroDbRealm" class="com.future.tsip.common.shiro.ShiroDbRealm"/>
+
+    <!-- Shiro Filter -->
+    <bean id="shiroFilter" class="org.apache.shiro.spring.web.ShiroFilterFactoryBean">
+        <!-- 调用我们配置的权限管理器 -->
+        <property name="securityManager" ref="securityManager"/>
+        <!-- 配置我们的登录请求地址 -->
+        <property name="loginUrl" value="/login"/>
+        <!-- 配置我们在登录页登录成功后的跳转地址，如果你访问的是非/login地址，则跳到您访问的地址 -->
+        <property name="unauthorizedUrl" value="/error/unauth.html"/>
+        <property name="filterChainDefinitions">
+            <value>
+                <!--anon 表示匿名访问，不需要认证以及授权-->
+                /js/**=anon
+                /css/**=anon
+                /images/**=anon
+                /pages/error/**=anon
+                /login=anon
+                /logout=user
+                /user/**=user
+                /webSocket/**=user
+                /system/*Manage/**=roles[admin]
+                /**=user<!--, customPerms -->
+                <!--authc表示需要认证 没有进行身份认证是不能进行访问的-->
+                <!--/admin*=authc-->
+                <!-- 表示访问/usermanage请求是需要当前用户具有user:create权限才能进行访问的
+				/pages/system/usermanage/new*=perms["user:create"] -->
+                <!-- 表示访问/student请求的用户必须是teacher角色，不然是不能进行访问的
+                /student=roles[teacher]	-->
+                <!-- 访问/pages/system/usermanage/*请求的用户必须是角色代码是1的，不然是不能进行访问的；注：此处须写完整的路径/pages/system/usermanage/*
+                /pages/system/usermanage/*=roles[1] -->
+
+            </value>
+        </property>
+        <!--<property name="filters">
+            <map>
+                <entry key="customPerms" value-ref="customPerms"></entry>
+            </map>
+        </property>-->
+    </bean>
+
+    <!-- 用户授权信息Cache, 采用EhCache -->
+    <bean id="shiroEhcacheManager" class="org.apache.shiro.cache.ehcache.EhCacheManager">
+        <property name="cacheManagerConfigFile" value="classpath:ehcache/ehcache-shiro.xml"/>
+    </bean>
+    <!-- 保证实现了Shiro内部lifecycle函数的bean执行 -->
+    <bean id="lifecycleBeanPostProcessor" class="org.apache.shiro.spring.LifecycleBeanPostProcessor"/>
+
+    <!--<bean id="customPerms" class="com.kthw.common.shiro.FramePermissionsAuthorizationFilter"/>-->
 </beans>

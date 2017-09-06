@@ -22,10 +22,10 @@ jQuery(function ($) {
             $('.text-danger').hide();
         },
         validate: function () {
-            if ($.trim(this.username.val()) == '') {
+            if ($.trim(this.username.val()) === '') {
                 this.hasError(this.username);
             }
-            if ($.trim(this.password.val()) == '') {
+            if ($.trim(this.password.val()) === '') {
                 this.hasError(this.password);
             }
             return this.username.val() && this.password.val();
@@ -44,7 +44,7 @@ jQuery(function ($) {
                     }),
                     success: function (msg) {
                         self.showError(msg.message);
-        				if (msg.errCode == 0) {
+        				if (msg.errCode === 0) {
         					window.location.href = "./pages/index.html";
         				}
                     },
@@ -58,7 +58,7 @@ jQuery(function ($) {
 
     $('.form-horizontal .form-control').keypress(function (e) {
         Login.remError($(this));
-        if (e.which == 13) {
+        if (e.which === 13) {
             Login.hideError();
             Login.login();
             return false;
