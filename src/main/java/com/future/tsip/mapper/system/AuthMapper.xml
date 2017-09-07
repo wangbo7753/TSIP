@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"  
+    "http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+<mapper namespace="com.future.tsip.mapper.system.AuthMapper">
+
+	<select id="getRoleByUser" parameterType="String" resultType="UserRole">
+		SELECT UR.*, ROLE.ROLE_NAME AS role_name, ROLE.ROLE_CODE AS role_code
+		FROM KT_USER_ROLES UR, KT_ROLE ROLE
+		WHERE UR.USER_ID = #{userId} AND ROLE.ROLE_ID = UR.ROLE_ID
+	</select>
+
+	<select id="queryFuncByUser" parameterType="String" resultType="Function">
+		SELECT DISTINCT (f.ID), f.FUNC_NAME, f.FUNC_URL, f.PARENT_ID, f.FUNC_LEVEL, f.FUNC_DESC, f.SHOW_ORDER, f.ENABLE
+		FROM KT_USER_ROLES r, KT_PERMISSION p, KT_FUNCTION f
+		WHERE r.USER_ID = #{userId} AND r.ROLE_ID = p.ROLE_ID AND p.FUNC_ID = f.ID AND f.ENABLE != 1
+		ORDER BY f.FUNC_LEVEL
+	</select>
+
+</mapper>

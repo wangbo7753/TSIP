@@ -28,11 +28,11 @@
     <!-- Mybatis SqlSessionFactory -->
     <bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
         <property name="dataSource" ref="dataSource"/>
-        <property name="typeAliasesPackage" value="com.kthw.tsip.model"/>
+        <property name="typeAliasesPackage" value="com.future.tsip.model"/>
     </bean>
     <!-- Mybatis Mapper Scanner -->
     <bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
-        <property name="basePackage" value="com.kthw.tsip.mapper"/>
+        <property name="basePackage" value="com.future.tsip.mapper"/>
     </bean>
     <context:component-scan base-package="com.future.tsip" use-default-filters="false">
         <context:include-filter type="annotation" expression="org.springframework.stereotype.Service"/>

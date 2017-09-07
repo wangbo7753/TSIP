@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"  
+    "http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+<mapper namespace="com.future.tsip.mapper.system.UserMapper">
+
+	<select id="getUserById" parameterType="String" resultType="User">
+		SELECT * FROM KT_USER WHERE USER_ID = #{userId}
+	</select>
+
+    <update id="login" parameterType="Map">
+        UPDATE KT_USER
+        SET LAST_LOGIN = #{loginDate}, LOGIN_IP = #{loginIP}, LOGIN_STATUS = 1
+        WHERE USER_ID = #{userId}
+    </update>
+
+    <insert id="addUserLog" parameterType="Map">
+        INSERT INTO KT_USER_LOG(ID, USER_ID, LOGIN_IP, LOGIN_DATE)
+        values(LOG_SEQ.NEXTVAL, #{userId}, #{loginIP}, #{loginDate})
+    </insert>
+
+    <update id="logout" parameterType="String">
+        UPDATE KT_USER
+        SET LOGIN_STATUS = 0
+        WHERE USER_ID = #{userId}
+    </update>
+
+    <update id="updateUser" parameterType="User">
+        UPDATE KT_USER
+        SET USER_PASS = #{user_pass}, USER_NAME = #{user_name}, ENABLED = #{enabled}
+        where USER_ID = #{user_id}
+    </update>
+
+    <update id="updateUserUrl" parameterType="Map">
+        UPDATE KT_USER
+        SET IDX_URL = #{idx_url}
+        WHERE USER_ID = #{user_id}
+    </update>
+
+</mapper>

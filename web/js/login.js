@@ -39,7 +39,7 @@ jQuery(function ($) {
                     contentType: 'application/json',
                     dataType : "json",
                     data: JSON.stringify({
-                    	userid: self.username.val(),
+                    	userId: self.username.val(),
                     	password: self.password.val()
                     }),
                     success: function (msg) {
