@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>综合预警</title>
+    <link rel="stylesheet" href="../../css/bootstrap/bootstrap.min.css" />
+    <link rel="stylesheet" href="../../css/datetimepicker/jquery.datetimepicker.min.css" />
+    <link rel="stylesheet" href="../../css/dataTables/dataTables.bootstrap.min.css" />
+    <link rel="stylesheet" href="../../css/common.css" />
+    <style>
+        table {
+            height: 100%;
+        }
+    </style>
+</head>
+<body>
+<div class="container-fluid">
+    <div class="row">
+        <div id="search-panel" class="col-xs-2 col-md-2">
+            <div style="padding-left: 20px;">
+                <h3 class="text-info search-title">
+                    查询条件<span class="glyphicon glyphicon-remove search-remove"></span>
+                </h3>
+                <form>
+                    <div class="form-group">
+                        <label for="station" class="control-label">探测站：</label>
+                        <input type="text" class="form-control" id="station">
+                    </div>
+                    <div class="form-group">
+                        <label for="trainId" class="control-label">车次：</label>
+                        <input type="text" class="form-control" id="trainId">
+                    </div>
+                    <dl class="advanced-search">
+                        <dt>高级搜索</dt>
+                        <dd class="form-group">
+                            <label for="startTime" class="control-label">开始时间：</label>
+                            <input type="text" class="form-control" id="startTime">
+                        </dd>
+                        <dd class="form-group">
+                            <label for="endTime" class="control-label">结束时间：</label>
+                            <input type="text" class="form-control" id="endTime">
+                        </dd>
+                    </dl>
+                    <div class="form-group">
+                        <button type="button" id="btn-search" class="btn btn-success form-control">查询</button>
+                    </div>
+                    <div class="form-group">
+                        <button type="button" id="btn-reset" class="btn btn-warning form-control">重置</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+        <div id="content-panel" class="col-xs-10 col-md-10">
+            <dl class="warning-content">
+                <dt>
+                    <h3 class="content-title"><span class="glyphicon glyphicon-menu-hamburger search-show"></span> 过车信息</h3>
+                    <button type="button" id="btn-refresh" class="btn btn-warning" style="width: 100px; float: right; margin: 15px 0 10px;">刷新</button>
+                </dt>
+                <dd>
+                    <table id="trainTable" class="table table-striped table-hover table-bordered" width="100%">
+                        <thead>
+                            <tr>
+                                <th>序号</th><th>过车时间</th><th>车次</th><th>车型</th><th>探测站</th><th>运行方向</th><th>平均车速(km/h)</th><th>辆数</th><th>综合指数</th><th>最高热级</th><th width="100">整车浏览</th>
+                            </tr>
+                        </thead>
+                        <tbody></tbody>
+                    </table>
+                </dd>
+            </dl>
+        </div>
+    </div>
+</div>
+<div class="back-top">
+    <a href="#">回顶部</a>
+</div>
+<script src="../../js/lib/require.js" data-main="../../js/vehicle/integratedWarning"></script>
+</body>
+</html>

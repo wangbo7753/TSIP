@@ -3,7 +3,11 @@ package com.future.tsip.serviceImpl.system;
 import com.future.tsip.common.base.ErrCode;
 import com.future.tsip.mapper.system.AuthMapper;
 import com.future.tsip.mapper.system.UserMapper;
-import com.future.tsip.model.system.*;
+import com.future.tsip.model.system.User;
+import com.future.tsip.model.system.UserRole;
+import com.future.tsip.model.system.MenuNode;
+import com.future.tsip.model.system.Role;
+import com.future.tsip.model.system.Function;
 import com.future.tsip.service.system.UserService;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -13,7 +17,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.*;
+import java.util.Collections;
+import java.util.Map;
+import java.util.HashMap;
+import java.util.List;
+import java.util.ArrayList;
+import java.util.Set;
+import java.util.HashSet;
+import java.util.Date;
 
 @Service
 public class UserServiceImpl implements UserService {

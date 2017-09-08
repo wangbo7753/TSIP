@@ -1,6 +1,10 @@
 package com.future.tsip.service.system;
 
-import com.future.tsip.model.system.*;
+import com.future.tsip.model.system.User;
+import com.future.tsip.model.system.UserRole;
+import com.future.tsip.model.system.MenuNode;
+import com.future.tsip.model.system.Role;
+import com.future.tsip.model.system.Function;
 
 import java.util.List;
 import java.util.Map;

@@ -22,6 +22,8 @@ define(function () {
             'datatables.net': 'dataTables/jquery.dataTables.min',
             'datatables': 'dataTables/dataTables.bootstrap.min',
             'zTree': 'zTree/jquery.ztree.all.min',
+            'jquery-mousewheel': 'datetimepicker/jquery.mousewheel.min',
+            'datetimepicker': 'datetimepicker/jquery.datetimepicker.full.min',
             'common': '../common'
         },
         shim: {

@@ -12,8 +12,6 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 
-
-
 public class BaseController implements ApplicationContextAware {
 
     public static final String SUCCESS = "success";
