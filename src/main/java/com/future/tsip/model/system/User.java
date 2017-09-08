@@ -1,5 +1,7 @@
 package com.future.tsip.model.system;
 
+import com.future.tsip.common.DateConvertor;
+
 import java.io.Serializable;
 import java.util.Date;
 
@@ -130,6 +132,10 @@ public class User implements Serializable {
         this.last_login = last_login;
     }
 
+    public String getLast_login_display() {
+        return DateConvertor.getTimeString(this.last_login);
+    }
+
     public int getLogin_status() {
         return login_status;
     }
@@ -152,6 +158,10 @@ public class User implements Serializable {
 
     public void setReg_date(Date reg_date) {
         this.reg_date = reg_date;
+    }
+
+    public String getReg_date_display() {
+        return DateConvertor.getTimeString(this.reg_date);
     }
 
     public String getIdx_url() {

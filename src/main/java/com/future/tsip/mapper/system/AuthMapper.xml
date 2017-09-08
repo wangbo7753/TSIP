@@ -16,4 +16,115 @@
 		ORDER BY f.FUNC_LEVEL
 	</select>
 
+    <insert id="addUserRole" parameterType="UserRole">
+        insert into kt_user_roles(user_id, role_id)
+        values(#{user_id}, #{role_id})
+    </insert>
+
+    <delete id="removeUserRole" parameterType="String">
+        delete from kt_user_roles
+        where user_id = #{user_id}
+    </delete>
+
+    <select id="getRolesList" resultType="Role">
+        <![CDATA[
+        SELECT role_id, role_name, role_code FROM kt_role ORDER BY role_id ASC
+        ]]>
+    </select>
+
+    <select id="getFuncList" resultType="Function">
+        <![CDATA[
+			SELECT * FROM KT_FUNCTION t
+			WHERE t.ENABLE <> 1
+			START WITH t.PARENT_ID IS NULL
+			CONNECT BY PRIOR t.ID = t.PARENT_ID
+			ORDER SIBLINGS BY t.SHOW_ORDER
+		]]>
+    </select>
+
+    <insert id="insertFunc" parameterType="Function">
+        <selectKey keyProperty="id" resultType="int" order="BEFORE">
+            SELECT FUNC_SEQ.NEXTVAL FROM DUAL
+        </selectKey>
+        INSERT INTO KT_FUNCTION (ID, FUNC_NAME, FUNC_URL, PARENT_ID, FUNC_LEVEL, FUNC_DESC, SHOW_ORDER)
+        VALUES (#{id}, #{func_name}, #{func_url}, #{parent_id, jdbcType=NUMERIC}, #{func_level}, #{func_desc}, #{show_order})
+    </insert>
+
+    <delete id="deleteAuthorityByFid" parameterType="String">
+        DELETE FROM KT_PERMISSION WHERE FUNC_ID in (
+        SELECT t.id FROM KT_FUNCTION t
+        START WITH t.id = #{funcId}
+        CONNECT BY PRIOR t.id = t.parent_id
+        )
+    </delete>
+
+    <update id="deleteFuncByFid" parameterType="String">
+        UPDATE KT_FUNCTION t SET t.ENABLE = 1 WHERE t.id in (
+        SELECT t.id FROM KT_FUNCTION t
+        START WITH t.id = #{funcId}
+        CONNECT BY PRIOR t.id = t.parent_id
+        )
+    </update>
+
+    <update id="updateFunc" parameterType="Function">
+        UPDATE KT_FUNCTION t SET t.FUNC_NAME = #{func_name}, t.FUNC_URL = #{func_url}, t.FUNC_DESC = #{func_desc}, t.SHOW_ORDER = #{show_order}
+        WHERE t.ID = #{id}
+    </update>
+
+    <select id="queryFuncIdsByRole" parameterType="String" resultType="Integer">
+        SELECT FUNC_ID
+        FROM KT_PERMISSION
+        WHERE ROLE_ID = #{roleId}
+    </select>
+
+    <insert id="insertNewAuth" parameterType="Map">
+        INSERT INTO KT_PERMISSION (FUNC_ID, ROLE_ID)
+        <foreach collection="newIds" item="id" separator="union all">
+            SELECT #{id}, #{roleId} FROM DUAL
+        </foreach>
+    </insert>
+
+    <delete id="deleteOldAuth" parameterType="Map">
+        DELETE FROM KT_PERMISSION WHERE ROLE_ID = #{roleId}
+        AND FUNC_ID in
+        <foreach collection="deleteIds" item="id" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+    <select id="checkRoleNameExists" parameterType="Role" resultType="boolean">
+        SELECT count(*) FROM KT_ROLE
+        WHERE ROLE_NAME = #{role_name}
+        <if test="role_id != null and role_id != 0">
+            AND ROLE_ID != #{role_id}
+        </if>
+    </select>
+
+    <insert id="insertRole" parameterType="Role">
+        <selectKey keyProperty="role_id" resultType="int" order="BEFORE">
+            SELECT ROLE_SEQ.NEXTVAL FROM DUAL
+        </selectKey>
+        INSERT INTO KT_ROLE (ROLE_ID, ROLE_NAME)
+        VALUES (#{role_id}, #{role_name})
+    </insert>
+
+    <update id="updateRole" parameterType="Role">
+        UPDATE KT_ROLE SET ROLE_NAME = #{role_name} WHERE ROLE_ID = #{role_id}
+    </update>
+
+    <delete id="deleteRole" parameterType="String">
+        DELETE FROM KT_ROLE
+        WHERE ROLE_ID = #{roleId}
+    </delete>
+
+    <delete id="deletePermissionByRole" parameterType="String">
+        DELETE FROM KT_PERMISSION
+        WHERE ROLE_ID = #{roleId}
+    </delete>
+
+    <delete id="deleteUserRole" parameterType="String">
+        DELETE FROM KT_USER_ROLES
+        WHERE ROLE_ID = #{roleId}
+    </delete>
+
 </mapper>

@@ -19,10 +19,14 @@ define(function () {
         paths: {
             'jquery': 'jquery/jquery.min',
             'bootstrap': 'bootstrap/bootstrap.min',
+            'datatables.net': 'dataTables/jquery.dataTables.min',
+            'datatables': 'dataTables/dataTables.bootstrap.min',
+            'zTree': 'zTree/jquery.ztree.all.min',
             'common': '../common'
         },
         shim: {
-            'bootstrap': ['jquery']
+            'bootstrap': ['jquery'],
+            'zTree': ['jquery']
         }
     });
 

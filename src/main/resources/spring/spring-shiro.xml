@@ -21,7 +21,7 @@
         <!-- 配置我们的登录请求地址 -->
         <property name="loginUrl" value="/login"/>
         <!-- 配置我们在登录页登录成功后的跳转地址，如果你访问的是非/login地址，则跳到您访问的地址 -->
-        <property name="unauthorizedUrl" value="/error/unauth.html"/>
+        <property name="unauthorizedUrl" value="/pages/error/unauth.html"/>
         <property name="filterChainDefinitions">
             <value>
                 <!--anon 表示匿名访问，不需要认证以及授权-->

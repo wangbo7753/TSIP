@@ -36,4 +36,35 @@
         WHERE USER_ID = #{user_id}
     </update>
 
+    <select id="getAllUsersCount" resultType="int">
+        <![CDATA[
+            SELECT COUNT(*) FROM KT_USER WHERE USER_ID != 'admin'
+        ]]>
+    </select>
+
+    <select id="getAllUsers" parameterType="Map" resultType="User">
+        <![CDATA[
+		SELECT * FROM (
+			SELECT ROWNUM AS rn, u.* FROM (
+		  		SELECT t.*, (SELECT wm_concat(r.ROLE_NAME) AS roleNames FROM KT_USER_ROLES k, KT_ROLE r WHERE k.USER_ID = t.USER_ID AND k.ROLE_ID = r.ROLE_ID) AS user_role_name
+		  		FROM KT_USER t
+		  		WHERE t.USER_ID != 'admin'
+		  		ORDER BY t.LAST_LOGIN DESC
+			) u
+			WHERE ROWNUM <= (${start} + ${length})
+		)
+		WHERE rn > ${start}
+        ]]>
+    </select>
+
+    <insert id="addUser" parameterType="User">
+        INSERT INTO KT_USER(USER_ID, USER_PASS, USER_NAME, USER_ROLE, ENABLED, REG_DATE, LAST_LOGIN, LOGIN_STATUS, IDX_URL)
+        VALUES(#{user_id}, #{user_pass}, #{user_name}, ${user_role}, ${enabled}, #{reg_date}, #{last_login}, 0, #{idx_url})
+    </insert>
+
+    <delete id="removeUser" parameterType="String">
+        delete from kt_user
+        where user_id = #{user_id}
+    </delete>
+
 </mapper>

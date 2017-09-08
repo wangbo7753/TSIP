@@ -3,6 +3,7 @@ package com.future.tsip.mapper.system;
 import com.future.tsip.model.system.User;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
 import java.util.Map;
 
 @Repository
@@ -19,4 +20,13 @@ public interface UserMapper {
     void updateUser(User user);
 
     void updateUserUrl(Map<String, Object> map);
+
+    int getAllUsersCount();
+
+    List<User> getAllUsers(Map<String, String> params);
+
+    void addUser(User user);
+
+    void removeUser(String userId);
+
 }
